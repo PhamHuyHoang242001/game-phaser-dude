@@ -4,19 +4,14 @@ const path = require("path");
 
 const app = express();
 
-const router = express.Router();
+// Cấu hình các route tĩnh
+app.use("/public", express.static(path.join(__dirname, "../public"))); // Sửa lại đường dẫn cho đúng
+app.use("/assets", express.static(path.join(__dirname, "../assets"))); // Sửa lại đường dẫn cho đúng
 
-// Serve static files
-app.use("/public", express.static(path.join(__dirname, "public")));
-app.use("/assets", express.static(path.join(__dirname, "assets")));
-
-// Route for homepage
-router.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "homepage.html"));
+// Đường dẫn đến trang chủ
+app.get("/", function (req, res) {
+  res.sendFile(path.join(__dirname, "../views", "homepage.html"));
 });
 
-app.use("/", router);
-
-// Export serverless handler
-module.exports = app;
+// Chuyển đổi Express thành một serverless function
 module.exports.handler = serverless(app);
